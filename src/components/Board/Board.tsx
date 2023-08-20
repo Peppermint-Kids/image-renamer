@@ -6,14 +6,6 @@ import { useDragDrop } from "../DragDropProvider";
 import { ColumnDropshadow, Container } from "./Board.styled";
 import ImageGallery from "../ImageGallery/ImageGallery";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../../shadcn/ui/card";
-
 const Board: React.FC = () => {
   const {
     handleDragEnd,
@@ -33,18 +25,7 @@ const Board: React.FC = () => {
         {(provided, snapshot) => (
           <>
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              <Card className="col-span-4">
-                <CardHeader>
-                  <CardTitle>Overview</CardTitle>
-                </CardHeader>
-                <CardContent className="">
-                  <ImageGallery
-                    key={columns[0].id}
-                    column={columns[0]}
-                    columnIndex={0}
-                  />
-                </CardContent>
-              </Card>
+              <ImageGallery key={columns[0].id} column={columns[0]} />
             </div>
             <Container
               id="image-board"

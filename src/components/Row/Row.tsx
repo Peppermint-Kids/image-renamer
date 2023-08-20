@@ -10,7 +10,6 @@ const Container = styled.div`
   border-radius: 4px;
   width: 100%;
   height: 50px;
-  margin-bottom: 10px;
   border: 1px solid;
 `;
 

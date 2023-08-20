@@ -1,59 +1,33 @@
 import React from "react";
-import {
-  Draggable,
-  DraggableProvided,
-  Droppable,
-  DroppableProvided,
-  DroppableStateSnapshot,
-} from "react-beautiful-dnd";
+import { Droppable, DroppableProvided } from "react-beautiful-dnd";
 import { ColumnType } from "../../assets/api";
-import { useDragDrop } from "../DragDropProvider";
 import { Row } from "../Row";
-import {
-  Container,
-  DropshadowContainer,
-  RowContainer,
-  RowDropshadow,
-  Title,
-  TitleContainer,
-} from "./Column.styled";
+import { RowContainer } from "./Column.styled";
+import { Card, CardContent, CardHeader, CardTitle } from "../../shadcn/ui/card";
 
 type Props = {
   column: ColumnType;
   columnIndex: number;
 };
 
-const Column: React.FC<Props> = ({ column, columnIndex }) => {
-  const { rowDropshadowProps } = useDragDrop();
-
+const Column: React.FC<Props> = ({ column }) => {
   return (
-    //  <Draggable draggableId={column.id} index={columnIndex}>
-    //    {(provided: DraggableProvided) => (
-    <Container>
-      <TitleContainer>
-        <Title>{column.title}</Title>
-      </TitleContainer>
-      <Droppable droppableId={column.id} type="image">
-        {(prov: DroppableProvided, snapshot: DroppableStateSnapshot) => (
-          <RowContainer ref={prov.innerRef} {...prov.droppableProps}>
-            {column.images.map((image, imageIndex) => (
-              <Row key={image?.id} image={image} index={imageIndex} />
-            ))}
-            {prov.placeholder}
-            <DropshadowContainer>
-              {snapshot.isDraggingOver && (
-                <RowDropshadow
-                  marginTop={rowDropshadowProps.marginTop}
-                  height={rowDropshadowProps.height}
-                />
-              )}
-            </DropshadowContainer>
-          </RowContainer>
-        )}
-      </Droppable>
-    </Container>
-    //    )}
-    //  </Draggable>
+    <Card>
+      <CardHeader>
+        <CardTitle>{column.title}</CardTitle>
+      </CardHeader>
+      <CardContent className="h-96">
+        <Droppable droppableId={column.id} type="image">
+          {(prov: DroppableProvided) => (
+            <RowContainer ref={prov.innerRef} {...prov.droppableProps}>
+              {column.images.map((image, imageIndex) => (
+                <Row key={image?.id} image={image} index={imageIndex} />
+              ))}
+            </RowContainer>
+          )}
+        </Droppable>
+      </CardContent>
+    </Card>
   );
 };
 
