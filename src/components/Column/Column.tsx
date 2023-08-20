@@ -27,33 +27,33 @@ const Column: React.FC<Props> = ({ column, columnIndex }) => {
   const { rowDropshadowProps } = useDragDrop();
 
   return (
-    <Draggable draggableId={column.id} index={columnIndex}>
-      {(provided: DraggableProvided) => (
-        <Container {...provided.draggableProps} ref={provided.innerRef}>
-          <TitleContainer>
-            <Title {...provided.dragHandleProps}>{column.title}</Title>
-          </TitleContainer>
-          <Droppable droppableId={column.id} type="task">
-            {(prov: DroppableProvided, snapshot: DroppableStateSnapshot) => (
-              <RowContainer ref={prov.innerRef} {...prov.droppableProps}>
-                {column.tasks.map((task, taskIndex) => (
-                  <Row key={task.id} task={task} index={taskIndex} />
-                ))}
-                {prov.placeholder}
-                <DropshadowContainer>
-                  {snapshot.isDraggingOver && (
-                    <RowDropshadow
-                      marginTop={rowDropshadowProps.marginTop}
-                      height={rowDropshadowProps.height}
-                    />
-                  )}
-                </DropshadowContainer>
-              </RowContainer>
-            )}
-          </Droppable>
-        </Container>
-      )}
-    </Draggable>
+    //  <Draggable draggableId={column.id} index={columnIndex}>
+    //    {(provided: DraggableProvided) => (
+    <Container>
+      <TitleContainer>
+        <Title>{column.title}</Title>
+      </TitleContainer>
+      <Droppable droppableId={column.id} type="image">
+        {(prov: DroppableProvided, snapshot: DroppableStateSnapshot) => (
+          <RowContainer ref={prov.innerRef} {...prov.droppableProps}>
+            {column.images.map((image, imageIndex) => (
+              <Row key={image?.id} image={image} index={imageIndex} />
+            ))}
+            {prov.placeholder}
+            <DropshadowContainer>
+              {snapshot.isDraggingOver && (
+                <RowDropshadow
+                  marginTop={rowDropshadowProps.marginTop}
+                  height={rowDropshadowProps.height}
+                />
+              )}
+            </DropshadowContainer>
+          </RowContainer>
+        )}
+      </Droppable>
+    </Container>
+    //    )}
+    //  </Draggable>
   );
 };
 

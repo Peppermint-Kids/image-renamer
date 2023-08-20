@@ -27,9 +27,9 @@ type ColDropshadow = { marginLeft: number; height: number };
 
 type DragDropContextProps = {
   onSubmit: (newRow: string, colIndex: number) => void;
-  handleDuplicateTask: (rowIndex: number, colIndex: number) => void;
+  handleDuplicateImage: (rowIndex: number, colIndex: number) => void;
   handleNewColumn: (newName: string) => void;
-  handleRemoveTask: (rowIndex: number, colIndex: number) => void;
+  handleRemoveImage: (rowIndex: number, colIndex: number) => void;
   handleDeleteColumn: (colIndex: number) => void;
   handleDragEnd: (result: DropResult) => void;
   handleDragStart: (event: any) => void;
@@ -105,22 +105,24 @@ const DragDropProvider: React.FC<{
   // handling movement of row in the same column
   // [[],[]],[]
   const moveRowSameColumn: DragDropProps = (source, destination) => {
-    // moving tasks in same column
+    // moving images in same column
     setColumns((prev) => {
       const updated = [...prev];
       // isolate the row of the column we want to adjust
-      const [{ tasks }] = updated.filter(({ id }) => id === source.droppableId);
+      const [{ images }] = updated.filter(
+        ({ id }) => id === source.droppableId
+      );
       // remove the source item
-      const [removed] = tasks.splice(source.index, 1);
+      const [removed] = images.splice(source.index, 1);
       // insert the source item at the new colIndex
-      tasks.splice(destination.index, 0, removed);
+      images.splice(destination.index, 0, removed);
       return updated;
     });
   };
 
   // handling movement of row between columns
   const moveRowDifferentColumn: DragDropProps = (source, destination) => {
-    // moving tasks between columns
+    // moving images between columns
     setColumns((prev) => {
       // filter out which column is the source and which is the destination
       const updated = [...prev];
@@ -131,9 +133,11 @@ const DragDropProvider: React.FC<{
         ({ id }) => id === destination.droppableId
       );
 
-      // extract the tasks from the columnn
-      const sourceRow = sourceColumn.tasks;
-      const destinationRow = destinationColumn.tasks;
+      console.log(destinationColumn);
+
+      // extract the images from the columnn
+      const sourceRow = sourceColumn.images;
+      const destinationRow = destinationColumn.images;
 
       // remove the source item
       const [removed] = sourceRow.splice(source.index, 1);
@@ -284,24 +288,24 @@ const DragDropProvider: React.FC<{
   const onSubmit = (newRow: string, colIndex: number) => {
     setColumns((prev) => {
       const updated = [...prev];
-      updated[colIndex].tasks.push({ content: newRow, id: v4() });
+      updated[colIndex].images.push({ content: newRow, id: v4() });
       return updated;
     });
   };
 
-  const handleRemoveTask = (rowIndex: number, colIndex: number) => {
+  const handleRemoveImage = (rowIndex: number, colIndex: number) => {
     setColumns((prev) => {
       const updated = [...prev];
-      updated[colIndex].tasks.splice(rowIndex, 1);
+      updated[colIndex].images.splice(rowIndex, 1);
       return updated;
     });
   };
 
-  const handleDuplicateTask = (rowIndex: number, colIndex: number) => {
+  const handleDuplicateImage = (rowIndex: number, colIndex: number) => {
     setColumns((prev) => {
       const updated = [...prev];
-      updated[colIndex].tasks.push({
-        content: updated[colIndex].tasks[rowIndex].content,
+      updated[colIndex].images.push({
+        content: updated[colIndex].images[rowIndex].content,
         id: v4(),
       });
       return updated;
@@ -316,7 +320,7 @@ const DragDropProvider: React.FC<{
         {
           id: v4(),
           title: newName,
-          tasks: [],
+          images: [],
         },
       ];
     });
@@ -326,9 +330,9 @@ const DragDropProvider: React.FC<{
     <DragDropContext.Provider
       value={{
         onSubmit,
-        handleDuplicateTask,
+        handleDuplicateImage,
         handleNewColumn,
-        handleRemoveTask,
+        handleRemoveImage,
         handleDeleteColumn,
         handleDragEnd,
         handleDragStart,

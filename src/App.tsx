@@ -4,7 +4,7 @@ import { Board, DragDropProvider } from "./components";
 
 function App() {
   return (
-    <div style={{ userSelect: "none" }}>
+    <div className="container mx-auto" style={{ userSelect: "none" }}>
       <DragDropProvider data={api.columns}>
         <Board />
       </DragDropProvider>

@@ -20,17 +20,15 @@ export const TitleContainer = styled.div`
   margin-bottom: 10px;
 `;
 export const Container = styled.div<{ isDragging?: boolean }>`
-  display: flex;
+  display: grid;
   justify-content: flex-start;
   align-items: center;
-  flex-direction: column;
-  max-width: 300px;
+  grid-template-columns: auto auto auto;
   min-width: 300px;
-  height: calc(100vh - 280px);
+  height: 400px;
   margin-right: 20px;
   flex: 1 0 auto;
   position: relative;
-  background-color: red;
   ${({ isDragging }) => isDragging && "opacity: 0.6;"}
 `;
 

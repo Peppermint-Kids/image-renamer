@@ -30,7 +30,6 @@ export const Container = styled.div<{ isDragging?: boolean }>`
   margin-right: 20px;
   flex: 1 0 auto;
   position: relative;
-  background-color: red;
   ${({ isDragging }) => isDragging && "opacity: 0.6;"}
 `;
 

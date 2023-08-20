@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 
-export type TaskType = {
+export type ImageType = {
   id: string;
   content: string;
 };
@@ -8,55 +8,60 @@ export type TaskType = {
 export type ColumnType = {
   id: string;
   title: string;
-  tasks: TaskType[];
+  images: ImageType[];
 };
 
-export type TaskBoardType = {
+export type ImageBoardType = {
   columns: ColumnType[];
 };
 
-export const api: TaskBoardType = {
+export const api: ImageBoardType = {
   columns: [
     {
-      id: v4(),
+      id: "image-gallery",
+      title: "Image Gallery",
+      images: [],
+    },
+    {
+      id: "front-images",
       title: "Front",
-      tasks: [
+      images: [
         { content: "item1", id: v4() },
         { content: "item2", id: v4() },
         { content: "item3", id: v4() },
       ],
     },
     {
-      id: v4(),
+      id: "back-images",
       title: "Back",
-      tasks: [
+      images: [
         { content: "item1", id: v4() },
         { content: "item2", id: v4() },
         { content: "item3", id: v4() },
       ],
     },
     {
-      id: v4(),
+      id: "side-images",
       title: "Side",
-      tasks: [
+      images: [
         { content: "item1", id: v4() },
         { content: "item2", id: v4() },
         { content: "item3", id: v4() },
       ],
     },
     {
-      id: v4(),
+      id: "zoom-images",
       title: "Zoom",
-      tasks: [
+      images: [
         { content: "item1", id: v4() },
         { content: "item2", id: v4() },
         { content: "item3", id: v4() },
       ],
     },
     {
-      id: v4(),
+      id: "extra-images",
       title: "Extras",
-      tasks: [
+      images: [
         { content: "item1", id: v4() },
         { content: "item2", id: v4() },
         { content: "item3", id: v4() },
