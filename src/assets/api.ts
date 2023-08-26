@@ -1,8 +1,9 @@
-import { v4 } from "uuid";
+import { ImageFile } from "../components/ImagesProvider";
 
 export type ImageType = {
   id: string;
-  content: string;
+  angle: string;
+  file: ImageFile;
 };
 
 export type ColumnType = {
@@ -25,47 +26,27 @@ export const api: ImageBoardType = {
     {
       id: "front-images",
       title: "Front",
-      images: [
-        { content: "item1", id: v4() },
-        { content: "item2", id: v4() },
-        { content: "item3", id: v4() },
-      ],
+      images: [],
     },
     {
       id: "back-images",
       title: "Back",
-      images: [
-        { content: "item1", id: v4() },
-        { content: "item2", id: v4() },
-        { content: "item3", id: v4() },
-      ],
+      images: [],
     },
     {
       id: "side-images",
       title: "Side",
-      images: [
-        { content: "item1", id: v4() },
-        { content: "item2", id: v4() },
-        { content: "item3", id: v4() },
-      ],
+      images: [],
     },
     {
       id: "zoom-images",
       title: "Zoom",
-      images: [
-        { content: "item1", id: v4() },
-        { content: "item2", id: v4() },
-        { content: "item3", id: v4() },
-      ],
+      images: [],
     },
     {
       id: "extra-images",
       title: "Extras",
-      images: [
-        { content: "item1", id: v4() },
-        { content: "item2", id: v4() },
-        { content: "item3", id: v4() },
-      ],
+      images: [],
     },
   ],
 };

@@ -2,40 +2,20 @@ import React, { useContext, useState } from "react";
 import { DraggableLocation, DropResult } from "react-beautiful-dnd";
 import { v4 } from "uuid";
 import { ColumnType } from "../assets";
+import { useImages } from "./ImagesProvider";
 
 type DragDropProps = (
   source: DraggableLocation,
   destination: DraggableLocation
 ) => void;
 
-// handle the manipulation of placeholder for row
-type RowDropshadowProps = (
-  event: any,
-  destinationIndex: number,
-  sourceIndex: number
-) => void;
-
-// handle the manipulation of placeholder for column
-type ColumnDropshadowProps = (
-  event: any,
-  destinationIndex: number,
-  sourceIndex: number
-) => void;
-
-type RowDropshadow = { marginTop: number; height: number };
-type ColDropshadow = { marginLeft: number; height: number };
-
 type DragDropContextProps = {
-  onSubmit: (newRow: string, colIndex: number) => void;
-  handleDuplicateImage: (rowIndex: number, colIndex: number) => void;
   handleNewColumn: (newName: string) => void;
   handleRemoveImage: (rowIndex: number, colIndex: number) => void;
   handleDeleteColumn: (colIndex: number) => void;
   handleDragEnd: (result: DropResult) => void;
   handleDragStart: (event: any) => void;
   handleDragUpdate: (event: any) => void;
-  rowDropshadowProps: RowDropshadow;
-  colDropshadowProps: ColDropshadow;
   columns: ColumnType[];
   setColumns: React.Dispatch<React.SetStateAction<ColumnType[]>>;
 };
@@ -44,63 +24,35 @@ const DragDropContext = React.createContext<DragDropContextProps | undefined>(
   undefined
 );
 
-// grabbing element currently being dragged from the dom
-const getDraggedElement = (draggableId: string) => {
-  const queryAttr = "data-rbd-drag-handle-draggable-id";
-  const domQuery = `[${queryAttr}='${draggableId}']`;
-  const draggedElement = document.querySelector(domQuery);
-  return draggedElement;
-};
-
-// updating the array of the placeholder by switching out the source and destination colIndex
-const getUpdatedChildrenArray = (
-  draggedElement: Element,
-  destinationIndex: number,
-  sourceIndex: number
-) => {
-  // grab children of the node
-  const child: Element[] = [...draggedElement!.parentNode!.children];
-
-  // if the indexes are the same (onDragStart) just return the dom array
-  if (destinationIndex === sourceIndex) return child;
-  // get the div of item being dragged
-  const draggedItem = child[sourceIndex];
-
-  // remove source
-  child.splice(sourceIndex, 1);
-
-  // return updated array by inputting dragged item
-  return child.splice(0, destinationIndex, draggedItem);
-};
-
-// isolate the number of style desired to pass as props
-const getStyle = (
-  updatedChildrenArray: Element[],
-  destinationIndex: number,
-  property: string,
-  clientDirection: "clientHeight" | "clientWidth"
-) =>
-  updatedChildrenArray.slice(0, destinationIndex).reduce((total, curr) => {
-    // get the style object of the item
-    const style = window.getComputedStyle(curr);
-    // isolate the # of the property desired
-    const prop = parseFloat(style[property]);
-    return total + curr[clientDirection] + prop;
-  }, 0);
-
 const DragDropProvider: React.FC<{
   data: ColumnType[];
   children: React.ReactNode;
 }> = ({ children, data }) => {
   const [columns, setColumns] = useState<ColumnType[]>(data);
-  const [colDropshadowProps, setColDropshadowProps] = useState<ColDropshadow>({
-    marginLeft: 0,
-    height: 0,
-  });
-  const [rowDropshadowProps, setRowDropshadowProps] = useState<RowDropshadow>({
-    marginTop: 0,
-    height: 0,
-  });
+  const { images } = useImages();
+
+  React.useEffect(() => {
+    if (images && images.length) {
+      setColumns((prevColumns) => {
+        const galleryColumn = prevColumns.find(
+          (col) => col.id === "image-gallery"
+        );
+        if (galleryColumn) {
+          galleryColumn.images = [
+            ...images.map((i) => {
+              return {
+                id: v4(),
+                file: i,
+                angle: "",
+              };
+            }),
+          ];
+        }
+        console.log("sdfkjn", prevColumns);
+        return [...prevColumns];
+      });
+    }
+  }, [images]);
 
   // handling movement of row in the same column
   // [[],[]],[]
@@ -175,89 +127,9 @@ const DragDropProvider: React.FC<{
       return updated;
     });
 
-  const handleDropshadowRow: RowDropshadowProps = (
-    event,
-    destinationIndex,
-    sourceIndex
-  ) => {
-    // isolating the element being dragged
-    const draggedElement = getDraggedElement(event.draggableId);
-    // if we aint draggin anything return
-    if (!draggedElement) return;
-    // isolate the height of element to determine the height of element being dragged
-    const { clientHeight } = draggedElement as Element;
-    // returning the manipulated array of dom elements
-    const updatedChildrenArray: Element[] = getUpdatedChildrenArray(
-      draggedElement as Element,
-      destinationIndex,
-      sourceIndex
-    );
-    // grabbing the # for marginTop
-    const marginTop = getStyle(
-      updatedChildrenArray,
-      destinationIndex,
-      "marginBottom",
-      "clientHeight"
-    );
-    // setting our props
-    setRowDropshadowProps({
-      height: clientHeight + 2,
-      marginTop: marginTop + 2 * destinationIndex,
-    });
-  };
+  const handleDragUpdate = (event) => {};
 
-  const handleDropshadowColumn: ColumnDropshadowProps = (
-    event,
-    destinationIndex,
-    sourceIndex
-  ) => {
-    // isolate element we are dragging
-    const draggedElement: Element | Node | null = getDraggedElement(
-      event.draggableId
-    )!.parentNode!.parentNode;
-    // if nothing is being dragged return
-    if (!draggedElement) return;
-    // isolate the height of element to determine the height of element being dragged
-    const { clientHeight } = draggedElement as Element;
-    // returning the manipulated array of dom elements
-    const updatedChildrenArray: Element[] = getUpdatedChildrenArray(
-      draggedElement as Element,
-      destinationIndex,
-      sourceIndex
-    );
-    // grabbing the # for marginLeft
-    const marginLeft = getStyle(
-      updatedChildrenArray,
-      destinationIndex,
-      "marginRight",
-      "clientWidth"
-    );
-    // setting props
-    setColDropshadowProps({
-      height: clientHeight,
-      marginLeft,
-    });
-  };
-
-  const handleDragUpdate = (event) => {
-    const { source, destination } = event;
-    if (!destination) return;
-    if (event.type === "column") {
-      handleDropshadowColumn(event, destination.index, source.index);
-    } else {
-      handleDropshadowRow(event, destination.index, source.index);
-    }
-  };
-
-  const handleDragStart = (event) => {
-    // the destination and source colIndex will be the same for start
-    const { index } = event.source;
-    if (event.type === "column") {
-      handleDropshadowColumn(event, index, index);
-    } else {
-      handleDropshadowRow(event, index, index);
-    }
-  };
+  const handleDragStart = (event) => {};
 
   const handleDragEnd = (result: DropResult) => {
     // if there is no destination, theres nothing to manipulate so lets
@@ -281,33 +153,14 @@ const DragDropProvider: React.FC<{
   const handleDeleteColumn = (colIndex: number) =>
     setColumns((prev) => {
       const updated = [...prev];
-      updated.filter((dat, rowIndex) => rowIndex !== colIndex);
+      updated.filter((data, rowIndex) => rowIndex !== colIndex);
       return updated;
     });
-
-  const onSubmit = (newRow: string, colIndex: number) => {
-    setColumns((prev) => {
-      const updated = [...prev];
-      updated[colIndex].images.push({ content: newRow, id: v4() });
-      return updated;
-    });
-  };
 
   const handleRemoveImage = (rowIndex: number, colIndex: number) => {
     setColumns((prev) => {
       const updated = [...prev];
       updated[colIndex].images.splice(rowIndex, 1);
-      return updated;
-    });
-  };
-
-  const handleDuplicateImage = (rowIndex: number, colIndex: number) => {
-    setColumns((prev) => {
-      const updated = [...prev];
-      updated[colIndex].images.push({
-        content: updated[colIndex].images[rowIndex].content,
-        id: v4(),
-      });
       return updated;
     });
   };
@@ -329,16 +182,12 @@ const DragDropProvider: React.FC<{
   return (
     <DragDropContext.Provider
       value={{
-        onSubmit,
-        handleDuplicateImage,
         handleNewColumn,
         handleRemoveImage,
         handleDeleteColumn,
         handleDragEnd,
         handleDragStart,
         handleDragUpdate,
-        rowDropshadowProps,
-        colDropshadowProps,
         columns,
         setColumns,
       }}

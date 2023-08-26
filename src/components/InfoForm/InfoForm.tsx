@@ -1,13 +1,13 @@
-import { Button } from "../shadcn/ui/button";
-import { Input } from "../shadcn/ui/input";
-import { Label } from "../shadcn/ui/label";
+import { Button } from "../../shadcn/ui/button";
+import { Input } from "../../shadcn/ui/input";
+import { Label } from "../../shadcn/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../shadcn/ui/select";
+} from "../../shadcn/ui/select";
 
 const COLOR_ARRAY = [
   { label: "Pink", value: "Pink" },

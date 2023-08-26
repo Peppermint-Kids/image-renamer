@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  Droppable,
-  DroppableProvided,
-  DroppableStateSnapshot,
-} from "react-beautiful-dnd";
+import { Droppable, DroppableProvided } from "react-beautiful-dnd";
 import { ColumnType } from "../../assets/api";
-import { useDragDrop } from "../DragDropProvider";
 import { Row } from "../Row";
 import { RowContainer } from "./ImageGallery.styled";
 import { Card, CardContent, CardHeader, CardTitle } from "../../shadcn/ui/card";

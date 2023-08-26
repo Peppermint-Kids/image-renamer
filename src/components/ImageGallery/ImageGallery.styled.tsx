@@ -2,11 +2,10 @@ import styled from "styled-components";
 
 export const RowContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(6, auto);
+  grid-template-columns: repeat(12, auto);
   gap: 8px;
-  grid-auto-flow: columns;
-  max-height: 300px;
-  min-height: 100px;
+  max-height: 200px;
+  min-height: 200px;
   overflow-y: auto;
   width: 100%;
   height: 100%;
@@ -22,9 +21,4 @@ export const Container = styled.div<{ isDragging?: boolean }>`
   flex: 1 0 auto;
   position: relative;
   ${({ isDragging }) => isDragging && "opacity: 0.6;"}
-`;
-
-export const Row = styled.div`
-  width: 100px;
-  height: 50px;
 `;

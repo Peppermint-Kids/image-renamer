@@ -16,14 +16,16 @@ const Column: React.FC<Props> = ({ column }) => {
       <CardHeader>
         <CardTitle>{column.title}</CardTitle>
       </CardHeader>
-      <CardContent className="h-96">
+      <CardContent>
         <Droppable droppableId={column.id} type="image">
           {(prov: DroppableProvided) => (
-            <RowContainer ref={prov.innerRef} {...prov.droppableProps}>
-              {column.images.map((image, imageIndex) => (
-                <Row key={image?.id} image={image} index={imageIndex} />
-              ))}
-            </RowContainer>
+            <div className="w-full h-full min-h-[200px] max-h-[200px]">
+              <RowContainer ref={prov.innerRef} {...prov.droppableProps}>
+                {column.images.map((image, imageIndex) => (
+                  <Row key={image?.id} image={image} index={imageIndex} />
+                ))}
+              </RowContainer>
+            </div>
           )}
         </Droppable>
       </CardContent>

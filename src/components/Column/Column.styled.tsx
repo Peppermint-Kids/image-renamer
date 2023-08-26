@@ -1,17 +1,12 @@
 import styled from "styled-components";
 
 export const RowContainer = styled.div`
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 8px;
+  max-height: 200px;
+  min-height: 200px;
+  overflow-y: auto;
   width: 100%;
   height: 100%;
-  overflow-y: auto;
-`;
-
-export const Row = styled.div`
-  width: 100%;
-  height: 50px;
 `;
