@@ -4,6 +4,7 @@ import { Board, DragDropProvider } from "./components";
 import ImagesProvider from "./components/ImagesProvider";
 import ImagePicker from "./components/InfoForm/ImagePicker";
 import InfoForm from "./components/InfoForm/InfoForm";
+import { Toaster } from "./shadcn/ui/toaster";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Board />
         </DragDropProvider>
       </ImagesProvider>
+      <Toaster />
     </div>
   );
 }
