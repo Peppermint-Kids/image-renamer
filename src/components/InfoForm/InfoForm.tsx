@@ -12,7 +12,6 @@ import { useImages } from "../ImagesProvider";
 import { useDragDrop } from "../DragDropProvider";
 import { useToast } from "../../shadcn/ui/use-toast";
 import React from "react";
-import { api } from "../../assets";
 
 const COLOR_ARRAY = [
   { label: "Pink", value: "Pink" },
@@ -94,7 +93,13 @@ const InfoForm: React.FC = () => {
           extraImages: getImages(5),
         },
       ]);
-      setColumns((prevState) => [prevState[0], ...EMPTY_COLUMNS]);
+      setColumns((prevState) => [
+        prevState[0],
+        ...EMPTY_COLUMNS.map((i) => {
+          i.images = [];
+          return i;
+        }),
+      ]);
       setStyleParams({ styleCode: "", color: "", photoshootType, photoType });
     } else {
       const missingFields = [];
@@ -132,7 +137,7 @@ const InfoForm: React.FC = () => {
           </SelectTrigger>
           <SelectContent>
             {COLOR_ARRAY.map((color) => (
-              <SelectItem value={color.label}>{color.value}</SelectItem>
+              <SelectItem value={color.value}>{color.label}</SelectItem>
             ))}
           </SelectContent>
         </Select>

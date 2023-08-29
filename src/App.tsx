@@ -5,6 +5,7 @@ import ImagesProvider from "./components/ImagesProvider";
 import ImagePicker from "./components/InfoForm/ImagePicker";
 import InfoForm from "./components/InfoForm/InfoForm";
 import { Toaster } from "./shadcn/ui/toaster";
+import SelectedImageTable from "./components/SelectedImageTable";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <ImagePicker />
           <InfoForm />
           <Board />
+          <SelectedImageTable />
         </DragDropProvider>
       </ImagesProvider>
       <Toaster />

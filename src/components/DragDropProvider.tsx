@@ -29,7 +29,7 @@ const DragDropProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children, data }) => {
   const [columns, setColumns] = useState<ColumnType[]>(data);
-  const { images } = useImages();
+  const { images, setImages } = useImages();
 
   React.useEffect(() => {
     if (images && images.length) {
@@ -85,14 +85,17 @@ const DragDropProvider: React.FC<{
         ({ id }) => id === destination.droppableId
       );
 
-      console.log(destinationColumn);
-
       // extract the images from the columnn
       const sourceRow = sourceColumn.images;
       const destinationRow = destinationColumn.images;
 
       // remove the source item
       const [removed] = sourceRow.splice(source.index, 1);
+
+      setImages((prevImages) => {
+        return prevImages.filter((i) => i !== removed.file);
+      });
+
       // insert the source item at the new colIndex
       destinationRow.splice(destination.index, 0, removed);
 
