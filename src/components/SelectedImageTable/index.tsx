@@ -66,7 +66,7 @@ const SelectedImageTable = () => {
         <h3 className="mt-2 mb-2">Selected Images</h3>
         <Button
           className="mb-2"
-          onClick={(e) => {
+          onClick={() => {
             renameState.forEach((rs) => {
               const { styleCode, color, photoType, photoshootType } =
                 rs.styleParams;

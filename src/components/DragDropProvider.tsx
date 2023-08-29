@@ -130,9 +130,9 @@ const DragDropProvider: React.FC<{
       return updated;
     });
 
-  const handleDragUpdate = (event) => {};
+  const handleDragUpdate = () => {};
 
-  const handleDragStart = (event) => {};
+  const handleDragStart = () => {};
 
   const handleDragEnd = (result: DropResult) => {
     // if there is no destination, theres nothing to manipulate so lets
@@ -156,7 +156,7 @@ const DragDropProvider: React.FC<{
   const handleDeleteColumn = (colIndex: number) =>
     setColumns((prev) => {
       const updated = [...prev];
-      updated.filter((data, rowIndex) => rowIndex !== colIndex);
+      updated.filter((_data, rowIndex) => rowIndex !== colIndex);
       return updated;
     });
 

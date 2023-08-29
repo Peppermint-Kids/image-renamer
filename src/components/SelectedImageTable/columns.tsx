@@ -71,8 +71,12 @@ export const columns: ColumnDef<RenameState>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem
-              onClick={(e) => {
-                table.options.meta?.editItem(row.index);
+              onClick={() => {
+                (
+                  table.options.meta as unknown as {
+                    editItem: (idx: number) => void;
+                  }
+                )?.editItem(row.index);
               }}
             >
               <Edit className="h-4 w-4 mr-2" />
@@ -80,8 +84,12 @@ export const columns: ColumnDef<RenameState>[] = [
             </DropdownMenuItem>
             <DropdownMenuItem
               className="text-red-600"
-              onClick={(e) => {
-                table.options.meta?.removeItem(row.index);
+              onClick={() => {
+                (
+                  table.options.meta as unknown as {
+                    removeItem: (idx: number) => void;
+                  }
+                ).removeItem(row.index);
               }}
             >
               <Trash className="h-4 w-4 mr-2" color="red" />

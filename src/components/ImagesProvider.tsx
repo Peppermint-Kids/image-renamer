@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { ImageType } from "../assets";
 
 export type ImageFile = { file: File; url: string };
 
