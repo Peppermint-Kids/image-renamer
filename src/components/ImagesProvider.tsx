@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { DialogNonTrigger } from "../shadcn/ui/dialog";
 
 export type ImageFile = { file: File; url: string };
 
@@ -25,6 +26,7 @@ type ImagedContextProps = {
   setStyleParams: React.Dispatch<React.SetStateAction<StylesParams>>;
   renameState: RenameState[];
   setRenameState: React.Dispatch<React.SetStateAction<RenameState[]>>;
+  setSelectedImageURL: React.Dispatch<React.SetStateAction<string | null>>;
 };
 const ImagesContext = React.createContext<ImagedContextProps | undefined>(
   undefined
@@ -42,6 +44,20 @@ const ImagesProvider: React.FC<{
   });
 
   const [renameState, setRenameState] = React.useState<RenameState[]>([]);
+  const [open, setOpen] = React.useState(false);
+  const [selectedImageURL, setSelectedImageURL] = React.useState<string | null>(
+    null
+  );
+  const onZoomModalCancel = () => {
+    setSelectedImageURL(null);
+    setOpen(false);
+  };
+
+  React.useEffect(() => {
+    if (selectedImageURL) {
+      setOpen(true);
+    }
+  }, [selectedImageURL]);
 
   return (
     <ImagesContext.Provider
@@ -52,9 +68,15 @@ const ImagesProvider: React.FC<{
         setStyleParams,
         renameState,
         setRenameState,
+        setSelectedImageURL,
       }}
     >
       {children}
+      <DialogNonTrigger
+        open={open}
+        content={<img src={selectedImageURL ?? ""} />}
+        onCancel={onZoomModalCancel}
+      />
     </ImagesContext.Provider>
   );
 };
