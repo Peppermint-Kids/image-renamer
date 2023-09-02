@@ -110,6 +110,38 @@ const DialogDescription = React.forwardRef<
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
+const DialogNonTrigger: React.FC<{
+  open: boolean;
+  title?: string;
+  content?: string | React.ReactNode;
+  onCancel: () => void;
+}> = ({ open, title, content, onCancel }) => {
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
+  React.useEffect(() => {
+    if (typeof open === "boolean" && open) triggerRef.current?.click();
+  }, [open]);
+  return (
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          onCancel();
+        }
+      }}
+    >
+      <DialogTrigger
+        style={{ display: "none" }}
+        ref={triggerRef}
+      ></DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          {title && <DialogTitle>Are you sure absolutely sure?</DialogTitle>}
+          <DialogDescription>{content}</DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 export {
   Dialog,
   DialogTrigger,
@@ -118,4 +150,5 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  DialogNonTrigger,
 };

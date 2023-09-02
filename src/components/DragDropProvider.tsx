@@ -48,7 +48,6 @@ const DragDropProvider: React.FC<{
             }),
           ];
         }
-        console.log("sdfkjn", prevColumns);
         return [...prevColumns];
       });
     }

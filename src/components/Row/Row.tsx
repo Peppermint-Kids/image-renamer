@@ -3,6 +3,7 @@ import { Draggable, DraggableProvided } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { ImageType } from "../../assets";
 import { AspectRatio } from "../../shadcn/ui/aspect-ratio";
+import { useImages } from "../ImagesProvider";
 
 const Container = styled.div`
   display: flex;
@@ -25,21 +26,30 @@ type Props = {
   index: number;
 };
 
-const Row: React.FC<Props> = ({ image, index }) =>
-  image && (
-    <Draggable draggableId={image.id} index={index}>
-      {(provided: DraggableProvided) => (
-        <Container
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-        >
-          <AspectRatio ratio={3 / 4}>
-            <ImageDisplay src={image.file.url} />
-          </AspectRatio>
-        </Container>
-      )}
-    </Draggable>
+const Row: React.FC<Props> = ({ image, index }) => {
+  const { setSelectedImageURL } = useImages();
+  return (
+    image && (
+      <Draggable draggableId={image.id} index={index}>
+        {(provided: DraggableProvided) => (
+          <Container
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+          >
+            <AspectRatio
+              ratio={3 / 4}
+              onClick={() => {
+                setSelectedImageURL(image.file.url);
+              }}
+            >
+              <ImageDisplay src={image.file.url} />
+            </AspectRatio>
+          </Container>
+        )}
+      </Draggable>
+    )
   );
+};
 
 export default Row;
