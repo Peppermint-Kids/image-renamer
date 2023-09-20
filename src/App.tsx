@@ -13,8 +13,8 @@ function App() {
       <ImagesProvider defaultImages={[]}>
         <DragDropProvider data={api.columns}>
           <ImagePicker />
-          <InfoForm />
           <Board />
+          <InfoForm />
           <SelectedImageTable />
         </DragDropProvider>
       </ImagesProvider>

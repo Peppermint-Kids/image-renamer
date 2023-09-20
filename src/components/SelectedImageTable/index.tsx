@@ -61,71 +61,71 @@ const SelectedImageTable = () => {
     });
   };
   return (
-    <div className=" mx-auto py-10">
+    <div className=" mx-auto py-6">
       <div>
         <h3 className="mt-2 mb-2">Selected Images</h3>
-        <Button
-          className="mb-2"
-          onClick={() => {
-            renameState.forEach((rs) => {
-              const { styleCode, color, photoType, photoshootType } =
-                rs.styleParams;
-
-              rs.frontImages.forEach((img, idx) => {
-                downloadImage(
-                  img.url,
-                  `${styleCode}-${color}-${photoType}-${photoshootType}-1F${
-                    idx + 1
-                  }.jpg`
-                );
-              });
-
-              rs.backImages.forEach((img, idx) => {
-                downloadImage(
-                  img.url,
-                  `${styleCode}-${color}-${photoType}-${photoshootType}-2B${
-                    idx + 1
-                  }.jpg`
-                );
-              });
-
-              rs.sideImages.forEach((img, idx) => {
-                downloadImage(
-                  img.url,
-                  `${styleCode}-${color}-${photoType}-${photoshootType}-3S${
-                    idx + 1
-                  }.jpg`
-                );
-              });
-
-              rs.zoomImages.forEach((img, idx) => {
-                downloadImage(
-                  img.url,
-                  `${styleCode}-${color}-${photoType}-${photoshootType}-4Z${
-                    idx + 1
-                  }.jpg`
-                );
-              });
-
-              rs.extraImages.forEach((img, idx) => {
-                downloadImage(
-                  img.url,
-                  `${styleCode}-${color}-${photoType}-${photoshootType}-5E${
-                    idx + 1
-                  }.${img.file.name.split(".").pop()}`
-                );
-              });
-            });
-          }}
-        >
-          Export
-        </Button>
       </div>
       <DataTable
         columns={columns}
         data={renameState}
         meta={{ removeItem, editItem }}
       />
+      <Button
+        className="mb-2 mt-4"
+        onClick={() => {
+          renameState.forEach((rs) => {
+            const { styleCode, color, photoType, photoshootType } =
+              rs.styleParams;
+
+            rs.frontImages.forEach((img, idx) => {
+              downloadImage(
+                img.url,
+                `${styleCode}-${color}-${photoType}-${photoshootType}-1F${
+                  idx + 1
+                }.jpg`
+              );
+            });
+
+            rs.backImages.forEach((img, idx) => {
+              downloadImage(
+                img.url,
+                `${styleCode}-${color}-${photoType}-${photoshootType}-2B${
+                  idx + 1
+                }.jpg`
+              );
+            });
+
+            rs.sideImages.forEach((img, idx) => {
+              downloadImage(
+                img.url,
+                `${styleCode}-${color}-${photoType}-${photoshootType}-3S${
+                  idx + 1
+                }.jpg`
+              );
+            });
+
+            rs.zoomImages.forEach((img, idx) => {
+              downloadImage(
+                img.url,
+                `${styleCode}-${color}-${photoType}-${photoshootType}-4Z${
+                  idx + 1
+                }.jpg`
+              );
+            });
+
+            rs.extraImages.forEach((img, idx) => {
+              downloadImage(
+                img.url,
+                `${styleCode}-${color}-${photoType}-${photoshootType}-5E${
+                  idx + 1
+                }.${img.file.name.split(".").pop()}`
+              );
+            });
+          });
+        }}
+      >
+        Export
+      </Button>
     </div>
   );
 };

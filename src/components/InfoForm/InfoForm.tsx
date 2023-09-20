@@ -14,10 +14,53 @@ import { useToast } from "../../shadcn/ui/use-toast";
 import React from "react";
 
 const COLOR_ARRAY = [
-  { label: "Pink", value: "Pink" },
-  { label: "Navy Blue", value: "NavyBlue" },
   { label: "Beige", value: "Beige" },
+  { label: "Black", value: "Black" },
+  { label: "Blue", value: "Blue" },
+  { label: "Blush", value: "Blush" },
+  { label: "Brown", value: "Brown" },
+  { label: "Camel", value: "Camel" },
+  { label: "Champagne", value: "Champagne" },
+  { label: "Copper", value: "Copper" },
+  { label: "Coral", value: "Coral" },
+  { label: "Cream", value: "Cream" },
+  { label: "Dark Green", value: "DarkGreen" },
+  { label: "Light Brown", value: "LightBrown" },
+  { label: "Fawn", value: "Fawn" },
+  { label: "Fuchsia", value: "Fuchsia" },
+  { label: "Gold", value: "Gold" },
+  { label: "Green", value: "Green" },
+  { label: "Grey", value: "Grey" },
+  { label: "Indigo", value: "Indigo" },
+  { label: "Khaki", value: "Khaki" },
+  { label: "Lavender", value: "Lavender" },
+  { label: "Lilac", value: "Lilac" },
+  { label: "Maroon", value: "Maroon" },
   { label: "Mauve", value: "Mauve" },
+  { label: "Multi", value: "Multi" },
+  { label: "Mustard", value: "Mustard" },
+  { label: "Navy Blue", value: "NavyBlue" },
+  { label: "Neon Green", value: "NeonGreen" },
+  { label: "Neon Orange", value: "NeonOrange" },
+  { label: "Neon Pink", value: "NeonPink" },
+  { label: "Off White", value: "OffWhite" },
+  { label: "Olive Green", value: "OliveGreen" },
+  { label: "Orange", value: "Orange" },
+  { label: "Peach", value: "Peach" },
+  { label: "Pink", value: "Pink" },
+  { label: "Pista", value: "Pista" },
+  { label: "Purple", value: "Purple" },
+  { label: "Red", value: "Red" },
+  { label: "Rust", value: "Rust" },
+  { label: "Sea Green", value: "SeaGreen" },
+  { label: "Silver", value: "Silver" },
+  { label: "Sky Blue", value: "SkyBlue" },
+  { label: "Teal Blue", value: "TealBlue" },
+  { label: "Turquoise Blue", value: "TurquoiseBlue" },
+  { label: "Violet", value: "Violet" },
+  { label: "White", value: "White" },
+  { label: "Wine", value: "Wine" },
+  { label: "Yellow", value: "Yellow" },
 ];
 
 const EMPTY_COLUMNS = [
@@ -118,7 +161,7 @@ const InfoForm: React.FC = () => {
   };
 
   return (
-    <div className="flex gap-4 pb-4">
+    <div className="flex gap-4 pb-4 mt-4">
       <div>
         <Label htmlFor="picture">
           Style Code
@@ -135,7 +178,7 @@ const InfoForm: React.FC = () => {
           <SelectTrigger className="w-[180px]">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent style={{ maxHeight: 300 }}>
             {COLOR_ARRAY.map((color) => (
               <SelectItem value={color.value}>{color.label}</SelectItem>
             ))}
@@ -155,7 +198,7 @@ const InfoForm: React.FC = () => {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="G">Gray background</SelectItem>
+            <SelectItem value="G">Grey/White Background</SelectItem>
             <SelectItem value="P">Poster</SelectItem>
             <SelectItem value="R">Raw</SelectItem>
           </SelectContent>
