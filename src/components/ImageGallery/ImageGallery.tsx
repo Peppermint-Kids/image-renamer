@@ -22,7 +22,12 @@ const ImageGallery: React.FC<Props> = ({ column }) => {
               {column.images.map(
                 (image, imageIndex) =>
                   image && (
-                    <Row key={image.id} image={image} index={imageIndex} />
+                    <Row
+                      key={image.id}
+                      image={image}
+                      index={imageIndex}
+                      columnId={column.id}
+                    />
                   )
               )}
             </RowContainer>

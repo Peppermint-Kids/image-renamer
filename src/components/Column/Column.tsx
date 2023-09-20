@@ -22,7 +22,12 @@ const Column: React.FC<Props> = ({ column }) => {
             <div className="w-full h-full min-h-[200px] max-h-[200px]">
               <RowContainer ref={prov.innerRef} {...prov.droppableProps}>
                 {column.images.map((image, imageIndex) => (
-                  <Row key={image?.id} image={image} index={imageIndex} />
+                  <Row
+                    key={image?.id}
+                    image={image}
+                    index={imageIndex}
+                    columnId={column.id}
+                  />
                 ))}
               </RowContainer>
             </div>
