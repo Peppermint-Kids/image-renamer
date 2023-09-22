@@ -1,9 +1,11 @@
 import { v4 } from "uuid";
 import { DataTable } from "../../shadcn/ui/data-table";
 import { useDragDrop } from "../DragDropProvider";
-import { useImages } from "../ImagesProvider";
+import { ImageFile, useImages } from "../ImagesProvider";
 import { columns } from "./columns";
 import { Button } from "../../shadcn/ui/button";
+
+type DownloadImage = { file: ImageFile; renamedFileName: string };
 
 const downloadImage = (url: string, fileName: string) => {
   const element = document.createElement("a");
@@ -13,6 +15,19 @@ const downloadImage = (url: string, fileName: string) => {
   document.body.appendChild(element);
   element.click();
   element.remove();
+};
+
+const downloadImageArray = (imageArray: DownloadImage[]) => {
+  const downloadNext = (i: number) => {
+    if (i >= imageArray.length) {
+      return;
+    }
+    downloadImage(imageArray[i].file.url, imageArray[i].renamedFileName);
+    setTimeout(function () {
+      downloadNext(i + 1);
+    }, 300);
+  };
+  downloadNext(0);
 };
 
 const SelectedImageTable = () => {
@@ -73,55 +88,57 @@ const SelectedImageTable = () => {
       <Button
         className="mb-2 mt-4"
         onClick={() => {
+          const renamedImageArray: DownloadImage[] = [];
           renameState.forEach((rs) => {
             const { styleCode, color, photoType, photoshootType } =
               rs.styleParams;
 
-            rs.frontImages.forEach((img, idx) => {
-              downloadImage(
-                img.url,
-                `${styleCode}-${color}-${photoType}-${photoshootType}-1F${
+            rs.frontImages.forEach((file, idx) => {
+              renamedImageArray.push({
+                file,
+                renamedFileName: `${styleCode}-${color}-${photoType}-${photoshootType}-1F${
                   idx + 1
-                }.jpg`
-              );
+                }.jpg`,
+              });
             });
 
-            rs.backImages.forEach((img, idx) => {
-              downloadImage(
-                img.url,
-                `${styleCode}-${color}-${photoType}-${photoshootType}-2B${
+            rs.backImages.forEach((file, idx) => {
+              renamedImageArray.push({
+                file,
+                renamedFileName: `${styleCode}-${color}-${photoType}-${photoshootType}-2B${
                   idx + 1
-                }.jpg`
-              );
+                }.jpg`,
+              });
             });
 
-            rs.sideImages.forEach((img, idx) => {
-              downloadImage(
-                img.url,
-                `${styleCode}-${color}-${photoType}-${photoshootType}-3S${
+            rs.sideImages.forEach((file, idx) => {
+              renamedImageArray.push({
+                file,
+                renamedFileName: `${styleCode}-${color}-${photoType}-${photoshootType}-3S${
                   idx + 1
-                }.jpg`
-              );
+                }.jpg`,
+              });
             });
 
-            rs.zoomImages.forEach((img, idx) => {
-              downloadImage(
-                img.url,
-                `${styleCode}-${color}-${photoType}-${photoshootType}-4Z${
+            rs.zoomImages.forEach((file, idx) => {
+              renamedImageArray.push({
+                file,
+                renamedFileName: `${styleCode}-${color}-${photoType}-${photoshootType}-4Z${
                   idx + 1
-                }.jpg`
-              );
+                }.jpg`,
+              });
             });
 
-            rs.extraImages.forEach((img, idx) => {
-              downloadImage(
-                img.url,
-                `${styleCode}-${color}-${photoType}-${photoshootType}-5E${
+            rs.extraImages.forEach((file, idx) => {
+              renamedImageArray.push({
+                file,
+                renamedFileName: `${styleCode}-${color}-${photoType}-${photoshootType}-5E${
                   idx + 1
-                }.${img.file.name.split(".").pop()}`
-              );
+                }.jpg`,
+              });
             });
           });
+          downloadImageArray(renamedImageArray);
         }}
       >
         Export
