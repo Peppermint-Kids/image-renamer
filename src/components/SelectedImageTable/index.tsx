@@ -13,12 +13,14 @@ import React from "react";
 import { Checkbox } from "../../shadcn/ui/checkbox";
 import { ZapIcon } from "lucide-react";
 import { getImagesFromRenameState } from "../../utils/renaming";
+import { Input } from "../../shadcn/ui/input";
 
 const SelectedImageTable = () => {
   const { renameState, setRenameState, setImages, setStyleParams } =
     useImages();
   const { setColumns } = useDragDrop();
   const [asZip, setAsZip] = React.useState(true);
+  const [downloadTuner, setDownloadTuner] = React.useState(2000);
   const removeItem = (idx: number) => {
     setRenameState((prevState) => {
       const [removedState] = prevState.splice(idx, 1);
@@ -65,7 +67,7 @@ const SelectedImageTable = () => {
     const images = renameState[idx];
     asZip
       ? downloadImageArrayAsZip(getImagesFromRenameState(images))
-      : downloadImageArray(getImagesFromRenameState(images));
+      : downloadImageArray(getImagesFromRenameState(images), downloadTuner);
   };
 
   const handleExport = () => {
@@ -77,7 +79,7 @@ const SelectedImageTable = () => {
     });
     asZip
       ? downloadImageArrayAsZip(renamedImageArray)
-      : downloadImageArray(renamedImageArray);
+      : downloadImageArray(renamedImageArray, downloadTuner);
   };
   return (
     <div className=" mx-auto py-6">
@@ -89,14 +91,14 @@ const SelectedImageTable = () => {
         data={renameState}
         meta={{ removeItem, editItem, exportItem }}
       />
-      <div>
+      <div className="flex items-center">
         <Button className="mb-2 mt-4" onClick={handleExport}>
           Download
         </Button>
         <div className="inline items-center space-x-2 relative ml-2">
           <Checkbox
             className="mt-1 absolute "
-            style={{ top: "-2px" }}
+            style={{ top: "0px" }}
             checked={asZip}
             onCheckedChange={(a) => setAsZip(a)}
           />
@@ -110,6 +112,23 @@ const SelectedImageTable = () => {
             Download as zip. (quick <ZapIcon size={14} className="inline" />)
           </label>
         </div>
+        <Input
+          type="number"
+          id="downloadTuner"
+          placeholder="downloadTuner"
+          className="w-[200px] inline"
+          value={downloadTuner}
+          step={100}
+          min={300}
+          onBlur={(e) => {
+            const val = Number(e.target.value);
+            setDownloadTuner(val < 1000 ? 1000 : val);
+          }}
+          onChange={(e) => {
+            const val = Number(e.target.value);
+            setDownloadTuner(val);
+          }}
+        />
       </div>
     </div>
   );
