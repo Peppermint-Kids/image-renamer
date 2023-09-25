@@ -17,7 +17,11 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  meta: { removeItem: (id: number) => void; editItem: (id: number) => void };
+  meta: {
+    removeItem: (id: number) => void;
+    editItem: (id: number) => void;
+    exportItem: (id: number, asZip?: boolean) => void;
+  };
 }
 
 export function DataTable<TData, TValue>({

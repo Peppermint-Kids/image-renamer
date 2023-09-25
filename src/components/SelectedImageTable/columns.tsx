@@ -1,7 +1,13 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { RenameState } from "../ImagesProvider";
 
-import { MoreHorizontal, Trash, Edit } from "lucide-react";
+import {
+  MoreHorizontal,
+  Trash,
+  Edit,
+  Download,
+  FolderDown,
+} from "lucide-react";
 
 import { Button } from "../../shadcn/ui/button";
 import {
@@ -81,6 +87,30 @@ export const columns: ColumnDef<RenameState>[] = [
             >
               <Edit className="h-4 w-4 mr-2" />
               Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                (
+                  table.options.meta as unknown as {
+                    exportItem: (idx: number) => void;
+                  }
+                )?.exportItem(row.index);
+              }}
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Download
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                (
+                  table.options.meta as unknown as {
+                    exportItem: (idx: number, asZip?: boolean) => void;
+                  }
+                )?.exportItem(row.index, true);
+              }}
+            >
+              <FolderDown className="h-4 w-4 mr-2" />
+              Download as .zip
             </DropdownMenuItem>
             <DropdownMenuItem
               className="text-red-600"

@@ -194,7 +194,7 @@ const InfoForm: React.FC = () => {
           value={photoType}
           onValueChange={handleFieldChange("photoType")}
         >
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[220px]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
