@@ -100,7 +100,9 @@ const SelectedImageTable = () => {
             className="mt-1 absolute "
             style={{ top: "0px" }}
             checked={asZip}
-            onCheckedChange={(a) => setAsZip(a)}
+            onCheckedChange={(a) => {
+              setAsZip(a === "indeterminate" ? true : a);
+            }}
           />
           <label
             onClick={() => {
