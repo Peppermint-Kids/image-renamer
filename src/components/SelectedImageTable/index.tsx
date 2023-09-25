@@ -1,39 +1,24 @@
 import { v4 } from "uuid";
 import { DataTable } from "../../shadcn/ui/data-table";
 import { useDragDrop } from "../DragDropProvider";
-import { ImageFile, useImages } from "../ImagesProvider";
+import { useImages } from "../ImagesProvider";
 import { columns } from "./columns";
 import { Button } from "../../shadcn/ui/button";
-
-type DownloadImage = { file: ImageFile; renamedFileName: string };
-
-const downloadImage = (url: string, fileName: string) => {
-  const element = document.createElement("a");
-  element.href = url;
-  element.download = fileName;
-
-  document.body.appendChild(element);
-  element.click();
-  element.remove();
-};
-
-const downloadImageArray = (imageArray: DownloadImage[]) => {
-  const downloadNext = (i: number) => {
-    if (i >= imageArray.length) {
-      return;
-    }
-    downloadImage(imageArray[i].file.url, imageArray[i].renamedFileName);
-    setTimeout(function () {
-      downloadNext(i + 1);
-    }, 300);
-  };
-  downloadNext(0);
-};
+import {
+  DownloadImage,
+  downloadImageArray,
+  downloadImageArrayAsZip,
+} from "../../utils/downloading";
+import React from "react";
+import { Checkbox } from "../../shadcn/ui/checkbox";
+import { ZapIcon } from "lucide-react";
+import { getImagesFromRenameState } from "../../utils/renaming";
 
 const SelectedImageTable = () => {
   const { renameState, setRenameState, setImages, setStyleParams } =
     useImages();
   const { setColumns } = useDragDrop();
+  const [asZip, setAsZip] = React.useState(true);
   const removeItem = (idx: number) => {
     setRenameState((prevState) => {
       const [removedState] = prevState.splice(idx, 1);
@@ -75,6 +60,25 @@ const SelectedImageTable = () => {
       return [...prevState];
     });
   };
+
+  const exportItem = (idx: number, asZip?: boolean) => {
+    const images = renameState[idx];
+    asZip
+      ? downloadImageArrayAsZip(getImagesFromRenameState(images))
+      : downloadImageArray(getImagesFromRenameState(images));
+  };
+
+  const handleExport = () => {
+    let renamedImageArray: DownloadImage[] = [];
+    renameState.forEach((rs) => {
+      renamedImageArray = renamedImageArray.concat(
+        getImagesFromRenameState(rs)
+      );
+    });
+    asZip
+      ? downloadImageArrayAsZip(renamedImageArray)
+      : downloadImageArray(renamedImageArray);
+  };
   return (
     <div className=" mx-auto py-6">
       <div>
@@ -83,66 +87,30 @@ const SelectedImageTable = () => {
       <DataTable
         columns={columns}
         data={renameState}
-        meta={{ removeItem, editItem }}
+        meta={{ removeItem, editItem, exportItem }}
       />
-      <Button
-        className="mb-2 mt-4"
-        onClick={() => {
-          const renamedImageArray: DownloadImage[] = [];
-          renameState.forEach((rs) => {
-            const { styleCode, color, photoType, photoshootType } =
-              rs.styleParams;
-
-            rs.frontImages.forEach((file, idx) => {
-              renamedImageArray.push({
-                file,
-                renamedFileName: `${styleCode}-${color}-${photoType}-${photoshootType}-1F${
-                  idx + 1
-                }.jpg`,
-              });
-            });
-
-            rs.backImages.forEach((file, idx) => {
-              renamedImageArray.push({
-                file,
-                renamedFileName: `${styleCode}-${color}-${photoType}-${photoshootType}-2B${
-                  idx + 1
-                }.jpg`,
-              });
-            });
-
-            rs.sideImages.forEach((file, idx) => {
-              renamedImageArray.push({
-                file,
-                renamedFileName: `${styleCode}-${color}-${photoType}-${photoshootType}-3S${
-                  idx + 1
-                }.jpg`,
-              });
-            });
-
-            rs.zoomImages.forEach((file, idx) => {
-              renamedImageArray.push({
-                file,
-                renamedFileName: `${styleCode}-${color}-${photoType}-${photoshootType}-4Z${
-                  idx + 1
-                }.jpg`,
-              });
-            });
-
-            rs.extraImages.forEach((file, idx) => {
-              renamedImageArray.push({
-                file,
-                renamedFileName: `${styleCode}-${color}-${photoType}-${photoshootType}-5E${
-                  idx + 1
-                }.jpg`,
-              });
-            });
-          });
-          downloadImageArray(renamedImageArray);
-        }}
-      >
-        Export
-      </Button>
+      <div>
+        <Button className="mb-2 mt-4" onClick={handleExport}>
+          Download
+        </Button>
+        <div className="inline items-center space-x-2 relative ml-2">
+          <Checkbox
+            className="mt-1 absolute "
+            style={{ top: "-2px" }}
+            checked={asZip}
+            onCheckedChange={(a) => setAsZip(a)}
+          />
+          <label
+            onClick={() => {
+              setAsZip((prev) => !prev);
+            }}
+            className="ml-16"
+            style={{ marginLeft: "20px" }}
+          >
+            Download as zip. (quick <ZapIcon size={14} className="inline" />)
+          </label>
+        </div>
+      </div>
     </div>
   );
 };

@@ -17,6 +17,7 @@ const Checkbox = React.forwardRef<
     {...props}
   >
     <CheckboxPrimitive.Indicator
+      style={{ margin: "-1px" }}
       className={cn("flex items-center justify-center text-current")}
     >
       <CheckIcon className="h-4 w-4" />
