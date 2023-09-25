@@ -95,7 +95,7 @@ const SelectedImageTable = () => {
         <Button className="mb-2 mt-4" onClick={handleExport}>
           Download
         </Button>
-        <div className="inline items-center space-x-2 relative ml-2">
+        <div className="inline items-center space-x-2 relative ml-2 flex-1">
           <Checkbox
             className="mt-1 absolute "
             style={{ top: "0px" }}
