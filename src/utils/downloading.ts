@@ -13,7 +13,10 @@ export const downloadImage = (url: string, fileName: string) => {
   element.remove();
 };
 
-export const downloadImageArray = (imageArray: DownloadImage[]) => {
+export const downloadImageArray = (
+  imageArray: DownloadImage[],
+  downloadTuner: number = 300
+) => {
   const downloadNext = (i: number) => {
     const arrLength = imageArray.length;
     if (arrLength > i) {
@@ -45,7 +48,7 @@ export const downloadImageArray = (imageArray: DownloadImage[]) => {
     } else return;
     setTimeout(function () {
       downloadNext(i + 5);
-    }, 300);
+    }, downloadTuner);
   };
   downloadNext(0);
 };
