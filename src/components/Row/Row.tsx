@@ -36,6 +36,7 @@ const Row: React.FC<Props> = ({ image, index }) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
+            title={image.file.file.name}
           >
             <AspectRatio
               ratio={3 / 4}

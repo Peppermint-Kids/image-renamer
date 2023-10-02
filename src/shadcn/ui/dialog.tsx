@@ -115,7 +115,8 @@ const DialogNonTrigger: React.FC<{
   title?: string;
   content?: string | React.ReactNode;
   onCancel: () => void;
-}> = ({ open, title, content, onCancel }) => {
+  footer?: string | React.ReactNode;
+}> = ({ open, title, content, onCancel, footer }) => {
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   React.useEffect(() => {
     if (typeof open === "boolean" && open) triggerRef.current?.click();
@@ -134,9 +135,10 @@ const DialogNonTrigger: React.FC<{
       ></DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          {title && <DialogTitle>Are you sure absolutely sure?</DialogTitle>}
-          <DialogDescription>{content}</DialogDescription>
+          {title && <DialogTitle>{title}</DialogTitle>}
         </DialogHeader>
+        {content}
+        {footer && <DialogFooter>{footer}</DialogFooter>}
       </DialogContent>
     </Dialog>
   );
