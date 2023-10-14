@@ -9,18 +9,15 @@ import {
   downloadImageArray,
   downloadImageArrayAsZip,
 } from "../../utils/downloading";
-import React from "react";
-import { Checkbox } from "../../shadcn/ui/checkbox";
-import { ZapIcon } from "lucide-react";
 import { getImagesFromRenameState } from "../../utils/renaming";
-import { Input } from "../../shadcn/ui/input";
+import { useSettings } from "../SettingsProvider";
 
 const SelectedImageTable = () => {
   const { renameState, setRenameState, setImages, setStyleParams } =
     useImages();
+  const { settings } = useSettings();
   const { setColumns } = useDragDrop();
-  const [asZip, setAsZip] = React.useState(true);
-  const [downloadTuner, setDownloadTuner] = React.useState(2000);
+
   const removeItem = (idx: number) => {
     setRenameState((prevState) => {
       const [removedState] = prevState.splice(idx, 1);
@@ -67,7 +64,10 @@ const SelectedImageTable = () => {
     const images = renameState[idx];
     asZip
       ? downloadImageArrayAsZip(getImagesFromRenameState(images))
-      : downloadImageArray(getImagesFromRenameState(images), downloadTuner);
+      : downloadImageArray(
+          getImagesFromRenameState(images),
+          settings.downloadTuner
+        );
   };
 
   const handleExport = () => {
@@ -77,10 +77,11 @@ const SelectedImageTable = () => {
         getImagesFromRenameState(rs)
       );
     });
-    asZip
+    settings.asZip
       ? downloadImageArrayAsZip(renamedImageArray)
-      : downloadImageArray(renamedImageArray, downloadTuner);
+      : downloadImageArray(renamedImageArray, settings.downloadTuner);
   };
+
   return (
     <div className=" mx-auto py-6">
       <div>
@@ -95,42 +96,6 @@ const SelectedImageTable = () => {
         <Button className="mb-2 mt-4" onClick={handleExport}>
           Download
         </Button>
-        <div className="inline items-center space-x-2 relative ml-2 flex-1">
-          <Checkbox
-            className="mt-1 absolute "
-            style={{ top: "0px" }}
-            checked={asZip}
-            onCheckedChange={(a) => {
-              setAsZip(a === "indeterminate" ? true : a);
-            }}
-          />
-          <label
-            onClick={() => {
-              setAsZip((prev) => !prev);
-            }}
-            className="ml-16"
-            style={{ marginLeft: "20px" }}
-          >
-            Download as zip. (quick <ZapIcon size={14} className="inline" />)
-          </label>
-        </div>
-        <Input
-          type="number"
-          id="downloadTuner"
-          placeholder="downloadTuner"
-          className="w-[200px] inline"
-          value={downloadTuner}
-          step={100}
-          min={300}
-          onBlur={(e) => {
-            const val = Number(e.target.value);
-            setDownloadTuner(val < 1000 ? 1000 : val);
-          }}
-          onChange={(e) => {
-            const val = Number(e.target.value);
-            setDownloadTuner(val);
-          }}
-        />
       </div>
     </div>
   );

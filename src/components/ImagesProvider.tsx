@@ -4,6 +4,8 @@ import { DialogNonTrigger } from "../shadcn/ui/dialog";
 export type ImageFile = { file: File; url: string };
 
 type StylesParams = {
+  season: string;
+  year: string;
   styleCode: string;
   color: string;
   photoType: string;
@@ -37,6 +39,8 @@ const ImagesProvider: React.FC<{
 }> = ({ children, defaultImages }) => {
   const [images, setImages] = React.useState<ImageFile[]>(defaultImages);
   const [styleParams, setStyleParams] = React.useState<StylesParams>({
+    year: "",
+    season: "",
     styleCode: "",
     color: "",
     photoshootType: "",
