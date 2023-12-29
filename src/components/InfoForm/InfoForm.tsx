@@ -124,9 +124,9 @@ const InfoForm: React.FC = () => {
 
   React.useEffect(() => {
     if (frontImages?.[0]) {
-      const fileName = frontImages[0].file.file.name.toUpperCase();
-      const fg_idx = fileName.indexOf("FG");
-      if (fg_idx >= 0 && itemNoToStyleMap) {
+      const fileName = frontImages[0]?.file?.file?.name?.toUpperCase();
+      const fg_idx = fileName?.indexOf("FG");
+      if (fileName && fg_idx >= 0 && itemNoToStyleMap) {
         const itemNumber = fileName.slice(fg_idx, fg_idx + 7);
         const style = itemNoToStyleMap.get(itemNumber);
         if (style)
@@ -186,8 +186,8 @@ const InfoForm: React.FC = () => {
     files = files.concat(getImages(4));
     files = files.concat(getImages(5));
 
-    return files.every((file) =>
-      file.file.name.toLocaleUpperCase().includes(fileName)
+    return files.every(
+      (file) => file?.file?.name?.toLocaleUpperCase().includes(fileName)
     );
   };
 
@@ -201,11 +201,12 @@ const InfoForm: React.FC = () => {
     if (!photoshootType) missingFields.push("Photoshoot Type");
 
     if (!missingFields.length) {
-      const fileName = frontImages[0].file.file.name.toUpperCase();
-      const fg_idx = fileName.indexOf("FG");
-      const itemNumber = fileName.slice(fg_idx, fg_idx + 7);
+      const fileName = frontImages[0]?.file?.file?.name?.toUpperCase();
+      const fg_idx = fileName?.indexOf("FG");
+      const itemNumber = fileName?.slice(fg_idx, fg_idx + 7);
 
       if (
+        !fileName ||
         (fg_idx >= 0 &&
           itemNoToStyleMap?.has(itemNumber) &&
           checkFileNames(itemNumber)) ||

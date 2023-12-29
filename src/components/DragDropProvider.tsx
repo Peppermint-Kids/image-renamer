@@ -92,7 +92,7 @@ const DragDropProvider: React.FC<{
       const [removed] = sourceRow.splice(source.index, 1);
 
       setImages((prevImages) => {
-        return prevImages.filter((i) => i !== removed.file);
+        return prevImages.filter((i) => i !== removed?.file);
       });
 
       // insert the source item at the new colIndex
