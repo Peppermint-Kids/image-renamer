@@ -123,11 +123,10 @@ const InfoForm: React.FC = () => {
     });
   };
 
-  const handleBarcodeChange = (e) => {
+  const handleBarcodeChange = (e: any) => {
     const data = itemMasterMap?.get(e.target.value);
-    console.log(e.target.value, data);
-    console.log(itemMasterMap);
     data && setStyleParams((prev) => ({ ...prev, ...data }));
+    data && setBarcode("");
   };
 
   React.useEffect(() => {

@@ -10,11 +10,11 @@ const SettingsModalContent: React.FC = () => {
   const { settings, updateSettings, createFGtoStyleMap, createItemMasterMap } =
     useSettings();
 
-  const handleCSVUpload = (e) => {
+  const handleCSVUpload = (e: any) => {
     createFGtoStyleMap(e.target.files[0]);
   };
 
-  const handleSAPItemMasterUpload = (e) => {
+  const handleSAPItemMasterUpload = (e: any) => {
     createItemMasterMap(e.target.files[0]);
   };
   return (
