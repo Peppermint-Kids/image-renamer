@@ -7,12 +7,16 @@ import { Checkbox } from "../../shadcn/ui/checkbox";
 import React from "react";
 
 const SettingsModalContent: React.FC = () => {
-  const { settings, updateSettings, createMap } = useSettings();
+  const { settings, updateSettings, createFGtoStyleMap, createItemMasterMap } =
+    useSettings();
 
   const handleCSVUpload = (e) => {
-    createMap(e.target.files[0]);
+    createFGtoStyleMap(e.target.files[0]);
   };
 
+  const handleSAPItemMasterUpload = (e) => {
+    createItemMasterMap(e.target.files[0]);
+  };
   return (
     <div className="grid gap-5">
       <div className="grid w-full max-w-xs items-center gap-1.5">
@@ -61,6 +65,17 @@ const SettingsModalContent: React.FC = () => {
           placeholder=""
           accept=".csv"
           onChange={handleCSVUpload}
+        />
+      </div>
+
+      <div className="grid w-full max-w-xs items-center gap-1.5">
+        <Label htmlFor="fileMap">SAP Item master</Label>
+        <Input
+          type="file"
+          id="sapItemMaster"
+          placeholder=""
+          accept=".csv"
+          onChange={handleSAPItemMasterUpload}
         />
       </div>
     </div>

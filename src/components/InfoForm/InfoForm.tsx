@@ -105,7 +105,8 @@ const EMPTY_STYLE = {
 const InfoForm: React.FC = () => {
   const [confirmationModalOpen, setConfirmationModalOpen] =
     React.useState<boolean>(false);
-  const { itemNoToStyleMap } = useSettings();
+  const { itemNoToStyleMap, itemMasterMap } = useSettings();
+  const [barcode, setBarcode] = React.useState<string>();
   const { styleParams, setStyleParams, setRenameState } = useImages();
   const { columns, setColumns } = useDragDrop();
   const frontImages = columns[1].images;
@@ -120,6 +121,13 @@ const InfoForm: React.FC = () => {
     setStyleParams((prevVal) => {
       return { ...prevVal, [fieldName]: val };
     });
+  };
+
+  const handleBarcodeChange = (e) => {
+    const data = itemMasterMap?.get(e.target.value);
+    console.log(e.target.value, data);
+    console.log(itemMasterMap);
+    data && setStyleParams((prev) => ({ ...prev, ...data }));
   };
 
   React.useEffect(() => {
@@ -227,12 +235,18 @@ const InfoForm: React.FC = () => {
     }
   };
 
-  const closeModal = (e) => {
-    setConfirmationModalOpen(false);
-  };
+  // const closeModal = (e) => {
+  //   setConfirmationModalOpen(false);
+  // };
 
   return (
     <div className="flex flex-col mt-4">
+      <div className="flex gap-4 mt-4">
+        <div>
+          <Label htmlFor="season">Scan barcode</Label>
+          <Input value={barcode} onBlur={handleBarcodeChange} />
+        </div>
+      </div>
       <div className="flex gap-4 pb-4 mt-4">
         <div>
           <Label htmlFor="season">
@@ -387,7 +401,7 @@ const InfoForm: React.FC = () => {
             </div>
             <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
               <Button
-                onClick={(e) => {
+                onClick={() => {
                   addStyle();
                   setConfirmationModalOpen(false);
                 }}
