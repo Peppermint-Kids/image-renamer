@@ -9,7 +9,7 @@ export type SettingsState = {
   downloadTuner: number;
 };
 
-export type MapRow = {
+export type ItemNoToStyleMap = {
   fgItemNo: string;
   styleNo: string;
   sapColor: string;
@@ -17,6 +17,15 @@ export type MapRow = {
   season: "SS" | "AW";
   year: string;
   approvedColor: string;
+};
+
+export type Item = {
+  barcode: string;
+  itemNo: string;
+  color: string;
+  styleCode: string;
+  season: "SS" | "AW";
+  year: string;
 };
 
 const DEFAULT_SETTINGS_STATE: SettingsState = {
@@ -29,8 +38,10 @@ type SettingsContextProps = {
   setSettings: React.Dispatch<React.SetStateAction<SettingsState>>;
   updateSettings: (field: keyof SettingsState, val: number | boolean) => void;
   setSettingsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  itemNoToStyleMap: Map<string, MapRow> | undefined;
-  createMap: (file: File) => void;
+  itemNoToStyleMap: Map<string, ItemNoToStyleMap> | undefined;
+  createFGtoStyleMap: (file: File) => void;
+  itemMasterMap: Map<string, Item> | undefined;
+  createItemMasterMap: (file: File) => void;
 };
 const SettingsContext = React.createContext<SettingsContextProps | undefined>(
   undefined
@@ -43,7 +54,8 @@ const SettingsProvider: React.FC<{
     React.useState<SettingsState>(defaultSettings);
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
   const [itemNoToStyleMap, setItemNoToStyleMap] =
-    React.useState<Map<string, MapRow>>();
+    React.useState<Map<string, ItemNoToStyleMap>>();
+  const [itemMasterMap, setItemMasterMap] = React.useState<Map<string, Item>>();
 
   const { toast } = useToast();
 
@@ -63,12 +75,12 @@ const SettingsProvider: React.FC<{
   const csvFileToArray = (text: any) => {
     const csvRows = text.slice(text.indexOf("\n") + 1).split("\n");
     const map = (csvRows as string[]).reduce(
-      (acc: Map<string, MapRow>, i: string) => {
+      (acc: Map<string, ItemNoToStyleMap>, i: string) => {
         const values = i.split(",");
-        const style: MapRow = {
+        const style: ItemNoToStyleMap = {
           fgItemNo: values[0].trim(),
           styleNo: values[1].trim(),
-          sapColor: values[2].trim(),
+          sapColor: values[2].trim().replace(/ /g, ""),
           styleCode: values[3].trim(),
           season: values[4].trim() === "Autumn Winter" ? "AW" : "SS",
           year: values[5].trim(),
@@ -82,7 +94,29 @@ const SettingsProvider: React.FC<{
     setItemNoToStyleMap(map);
   };
 
-  const createMap = (file: File) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const itemMasterToArray = (text: any) => {
+    const csvRows = text.slice(text.indexOf("\n") + 1).split("\n");
+    const map = (csvRows as string[]).reduce(
+      (acc: Map<string, Item>, i: string) => {
+        const values = i.split(",");
+        const style: Item = {
+          barcode: values[5].trim(),
+          itemNo: values[6].trim(),
+          color: values[2].trim().replace(/ /g, ""),
+          styleCode: values[8].trim(),
+          season: values[9].trim() === "Autumn Winter" ? "AW" : "SS",
+          year: values[10].trim(),
+        };
+        acc.set(values[5].trim(), style);
+        return acc;
+      },
+      new Map()
+    );
+    setItemMasterMap(map);
+  };
+
+  const createFGtoStyleMap = (file: File) => {
     try {
       const fileReader = new FileReader();
       if (file) {
@@ -106,6 +140,30 @@ const SettingsProvider: React.FC<{
     }
   };
 
+  const createItemMasterMap = (file: File) => {
+    try {
+      const fileReader = new FileReader();
+      if (file) {
+        fileReader.onload = function (event) {
+          const text = event?.target?.result;
+          itemMasterToArray(text);
+        };
+        fileReader.readAsText(file);
+      }
+      toast({
+        variant: "default",
+        title: "Success!",
+        description: "CSV uploaded. Item master map generated.",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "CSV upload failed. Error during conversion. Retry!",
+      });
+    }
+  };
+
   return (
     <SettingsContext.Provider
       value={{
@@ -114,7 +172,9 @@ const SettingsProvider: React.FC<{
         setSettings,
         updateSettings,
         itemNoToStyleMap,
-        createMap,
+        createFGtoStyleMap,
+        itemMasterMap,
+        createItemMasterMap,
       }}
     >
       {children}
