@@ -106,7 +106,7 @@ const InfoForm: React.FC = () => {
   const [confirmationModalOpen, setConfirmationModalOpen] =
     React.useState<boolean>(false);
   const { itemNoToStyleMap, itemMasterMap } = useSettings();
-  const [barcode, setBarcode] = React.useState<string>();
+  const [barcode, setBarcode] = React.useState<string>("");
   const { styleParams, setStyleParams, setRenameState } = useImages();
   const { columns, setColumns } = useDragDrop();
   const frontImages = columns[1].images;
@@ -243,7 +243,13 @@ const InfoForm: React.FC = () => {
       <div className="flex gap-4 mt-4">
         <div>
           <Label htmlFor="season">Scan barcode</Label>
-          <Input value={barcode} onBlur={handleBarcodeChange} />
+          <Input
+            value={barcode}
+            onChange={(e) => {
+              setBarcode(e.target.value);
+            }}
+            onBlur={handleBarcodeChange}
+          />
         </div>
       </div>
       <div className="flex gap-4 pb-4 mt-4">
