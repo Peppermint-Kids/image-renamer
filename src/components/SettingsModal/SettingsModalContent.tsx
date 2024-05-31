@@ -1,4 +1,4 @@
-import { Settings, ZapIcon } from "lucide-react";
+import { DownloadIcon, Settings, ZapIcon } from "lucide-react";
 import { Button } from "../../shadcn/ui/button";
 import { useSettings } from "../SettingsProvider";
 import { Label } from "../../shadcn/ui/label";
@@ -69,7 +69,7 @@ const SettingsModalContent: React.FC = () => {
       </div>
 
       <div className="grid w-full max-w-xs items-center gap-1.5">
-        <Label htmlFor="fileMap">SAP Item master</Label>
+        <Label htmlFor="fileMap">Barcode master</Label>
         <Input
           type="file"
           id="sapItemMaster"
@@ -77,6 +77,12 @@ const SettingsModalContent: React.FC = () => {
           accept=".csv"
           onChange={handleSAPItemMasterUpload}
         />
+        <small>
+          Download sample file.
+          <a className="ml-2" href={"image-renamer/csv/barcode_sample.csv"}>
+            <DownloadIcon size={14} className="inline" /> download
+          </a>
+        </small>
       </div>
     </div>
   );

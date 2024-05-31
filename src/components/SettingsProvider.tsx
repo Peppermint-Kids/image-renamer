@@ -100,15 +100,17 @@ const SettingsProvider: React.FC<{
     const map = (csvRows as string[]).reduce(
       (acc: Map<string, Item>, i: string) => {
         const values = i.split(",");
-        const style: Item = {
-          barcode: values[5].trim(),
-          itemNo: values[6].trim(),
-          color: values[2].trim().replace(/ /g, ""),
-          styleCode: values[8].trim(),
-          season: values[9].trim() === "Autumn Winter" ? "AW" : "SS",
-          year: values[10].trim(),
-        };
-        acc.set(values[5].trim(), style);
+        if (values.length === 6) {
+          const style: Item = {
+            barcode: values[0].trim(),
+            itemNo: values[1].trim(),
+            color: values[3].trim().replace(/ /g, ""),
+            styleCode: values[2].trim(),
+            season: values[4].trim() === "Autumn Winter" ? "AW" : "SS",
+            year: values[5].trim(),
+          };
+          acc.set(values[0].trim(), style);
+        }
         return acc;
       },
       new Map()
