@@ -278,6 +278,7 @@ const InfoForm: React.FC = () => {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="2025">2025</SelectItem>
               <SelectItem value="2024">2024</SelectItem>
               <SelectItem value="2023">2023</SelectItem>
               <SelectItem value="2022">2022</SelectItem>
@@ -287,12 +288,6 @@ const InfoForm: React.FC = () => {
               <SelectItem value="2018">2018</SelectItem>
               <SelectItem value="2017">2017</SelectItem>
               <SelectItem value="2016">2016</SelectItem>
-              <SelectItem value="2015">2015</SelectItem>
-              <SelectItem value="2014">2014</SelectItem>
-              <SelectItem value="2013">2013</SelectItem>
-              <SelectItem value="2012">2012</SelectItem>
-              <SelectItem value="2011">2011</SelectItem>
-              <SelectItem value="2010">2010</SelectItem>
             </SelectContent>
           </Select>
         </div>
