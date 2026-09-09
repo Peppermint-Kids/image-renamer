@@ -47,6 +47,7 @@ const COLOR_ARRAY = [
   { label: "Neon Pink", value: "NeonPink" },
   { label: "Off White", value: "OffWhite" },
   { label: "Olive Green", value: "OliveGreen" },
+  { label: "Onion Pink", value: "OnionPink" },
   { label: "Orange", value: "Orange" },
   { label: "Peach", value: "Peach" },
   { label: "Pink", value: "Pink" },
